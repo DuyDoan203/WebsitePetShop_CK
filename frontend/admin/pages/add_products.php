@@ -8,7 +8,7 @@
     $conn = $database->getConnection();
 ?>
 
-<main>
+<main>  
     <div class="container-fluid px-4">
         <h2 class="mt-4">Thêm sản phẩm</h2>
         <form action="" method="POST" enctype="multipart/form-data">
@@ -22,9 +22,18 @@
             </div>
             <div class="mb-3">
                 <label for="category_id">Loại sản phẩm</label>
-                <select name="category_id" id="category_id" class="form-control" required>
-                    <option value="1">Chó</option>
-                    <option value="2">Mèo</option>
+                <select id="category_id" name="category_id" class="form-control" required>
+                    <?php
+                    // Lấy danh sách các loại sản phẩm từ cơ sở dữ liệu
+                    $category_query = $conn->prepare("SELECT id, name FROM categories");
+                    $category_query->execute();
+                    $categories = $category_query->fetchAll();
+
+                    // Hiển thị các loại sản phẩm
+                    foreach ($categories as $category) {
+                        echo "<option value='" . $category['id'] . "'>" . $category['name'] . "</option>";
+                    }
+                    ?>
                 </select>
             </div>
             <div class="mb-3">
@@ -67,7 +76,7 @@
                         $stmt = $conn->prepare("INSERT INTO pets (name, price, description, category_id, image) VALUES (?, ?, ?, ?, ?)");
                         $stmt->execute([$name, $price, $description, $category_id, $image_name]);
 
-                        echo "<script>alert('Thêm sản phẩm thành công'); location.href='products.php';</script>";
+                        echo "<script>alert('Thêm sản phẩm thành công'); location.href='../pages/products.php';</script>";
                     } else {
                         echo "<div class='alert alert-danger'>Upload ảnh thất bại.</div>";
                     }

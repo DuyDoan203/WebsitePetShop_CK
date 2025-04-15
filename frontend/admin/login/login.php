@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 require_once(__DIR__ . '/../../../apps/config/db.php');
@@ -6,36 +5,33 @@ require_once(__DIR__ . '/../../../apps/config/db.php');
 $error = '';
 $username = '';
 
-// Nếu có redirect URL từ booking.php
-$redirect_url = $_GET['redirect_to'] ?? '../home.php';
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST["username"] ?? '';
-    $password = $_POST["password"] ?? '';
+    $username = $_POST["username"];
+    $password = $_POST["password"];
 
-    if (empty($username) || empty($password)) {
-        $error = "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!";
-    } else {
-        $db = new Database();
-        $conn = $db->getConnection();
+    $db = new Database();
+    $conn = $db->getConnection();
 
-        $sql = "SELECT * FROM users WHERE username = :username";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $sql = "SELECT * FROM users WHERE username = :username";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
 
-        if ($user && password_verify($password, $user['password'])) {
-            // Lưu session
-            $_SESSION['username'] = $user['username'];
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($password, $user['password'])) {
+        // Kiểm tra quyền admin
+        if ($user['role'] === 'admin') {
+            $_SESSION['username'] = $username;
             $_SESSION['user_id'] = $user['id'];
-
-            // Chuyển hướng đến trang mong muốn
-            header("Location: " . $redirect_url);
+            $_SESSION['role'] = 'admin';
+            header("Location: /WebsitePetShop/frontend/admin/pages/admin.php");
             exit();
         } else {
-            $error = "Sai tên đăng nhập hoặc mật khẩu!";
+            $error = "Bạn không có quyền truy cập trang admin.";
         }
+    } else {
+        $error = "Sai tài khoản hoặc mật khẩu!";
     }
 }
 ?>
@@ -135,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <a class="small text-muted" href="register.php">Create an Account!</a>
                                 </div>
                             </div>
-                        </div> 
+                        </div> <!-- End form col -->
                     </div>
                 </div>
             </div>

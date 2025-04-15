@@ -19,6 +19,10 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-concierge-bell"></i></div>
                         Quản lý dịch vụ
                     </a>
+                    <a class="nav-link" href="../pages/booked_services.php">
+                        <div class="sb-nav-link-icon"><i class="fas fa-concierge-bell"></i></div>
+                        Quản lý lịch đặt dịch vụ
+                    </a>
 
                     <div class="sb-sidenav-menu-heading">Người dùng</div>
                     <a class="nav-link" href="accounts.php">

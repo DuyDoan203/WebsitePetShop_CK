@@ -40,7 +40,7 @@
                             <td><?= $row['name'] ?></td>
                             <td><?= number_format($row['price'], 0, ',', '.') ?> đ</td>
                             <td><?= $row['category_id'] ?></td>
-                            <td><img src="../uploads/<?= $row['image'] ?>" width="60" /></td>
+                            <td><img src="../uploads/?= $row['image'] ?>" width="60" /></td>
                             <td><?= $row['description'] ?></td> <!-- Mô tả sản phẩm -->
                             <td>
                                   <a href="edit_products.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm">Sửa</a>

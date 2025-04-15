@@ -34,6 +34,10 @@
             <label for="date" class="form-label">Ngày đặt:</label>
             <input type="date" name="date" id="date" class="form-control" required>
         </div>
+        <div class="mb-3">
+            <label for="note" class="form-label">Ghi chú:</label>
+            <textarea name="note" id="note" class="form-control"></textarea>
+        </div>
         <button type="submit" class="btn btn-success">Xác nhận đặt lịch</button>
     </form>
 </div>
